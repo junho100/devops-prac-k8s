@@ -41,7 +41,7 @@ kubectl apply -f apps/root/root-app.yaml
 
 ## 서버 애플리케이션 정보
 
-- 이미지: bemodesty306/devops-prac-server:sha-8c56847
+- 이미지: bemodesty306/devops-prac-server
 - 포트: 8080
 
 ## 참고 사항
