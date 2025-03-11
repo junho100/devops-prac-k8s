@@ -1,0 +1,36 @@
+# 전체 애플리케이션 스택을 위한 상위 values 파일
+
+# Server 애플리케이션 설정
+server:
+  replicaCount: 1
+  image:
+    repository: bemodesty306/devops-prac-server
+    tag: "sha-8c56847"
+  service:
+    type: ClusterIP
+    port: 8080
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: server.local
+        paths:
+          - path: /
+            pathType: Prefix
+
+# NGINX Ingress Controller 설정
+nginx-ingress:
+  controller:
+    name: controller
+    service:
+      type: LoadBalancer
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi

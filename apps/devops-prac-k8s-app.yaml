@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devops-prac-k8s-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/junho100/devops-prac-k8s.git
+    targetRevision: HEAD
+    path: charts/devops-prac-k8s
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
