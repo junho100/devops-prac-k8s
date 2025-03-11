@@ -9,8 +9,7 @@
 ├── apps/                  # ArgoCD 애플리케이션 매니페스트
 │   ├── root/              # 루트 애플리케이션
 │   │   └── root-app.yaml  # 루트 애플리케이션 매니페스트
-│   └── server/            # 서버 애플리케이션
-│       └── server-app.yaml # 서버 애플리케이션 매니페스트
+│   └── server-app.yaml    # 서버 애플리케이션 매니페스트
 └── charts/                # Helm 차트
     └── server/            # 서버 애플리케이션 Helm 차트
         └── server/        # 서버 Helm 차트 디렉토리
@@ -30,7 +29,7 @@
 ### 배포 방법
 
 1. 이 저장소를 클론합니다.
-2. `apps/root/root-app.yaml` 및 `apps/server/server-app.yaml` 파일에서 `repoURL`을 실제 GitHub 저장소 URL로 변경합니다.
+2. `apps/root/root-app.yaml` 및 `apps/server-app.yaml` 파일에서 `repoURL`을 실제 GitHub 저장소 URL로 변경합니다.
 3. ArgoCD에 루트 애플리케이션을 배포합니다:
 
 ```bash
@@ -48,3 +47,4 @@ kubectl apply -f apps/root/root-app.yaml
 
 - 이 예제는 ArgoCD의 App of Apps 패턴을 보여주기 위한 것입니다.
 - 실제 환경에서는 보안 및 리소스 설정을 적절히 조정해야 합니다.
+- ArgoCD App of Apps 패턴에서는 루트 애플리케이션이 다른 애플리케이션을 찾을 수 있도록 디렉토리 구조가 중요합니다.
