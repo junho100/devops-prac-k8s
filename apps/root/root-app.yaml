@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-username/devops-prac-k8s.git # 실제 GitHub 저장소 URL로 변경해주세요
+    repoURL: https://github.com/junho100/devops-prac-k8s.git # 실제 GitHub 저장소 URL로 변경해주세요
     targetRevision: HEAD
     path: apps
   destination:
