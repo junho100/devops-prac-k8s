@@ -38,7 +38,7 @@ datasources:
         isDefault: true
 
 dashboardProviders:
-  dashboardproviders.yaml:
+  dashboardproviders:
     - name: "default"
       orgId: 1
       folder: ""

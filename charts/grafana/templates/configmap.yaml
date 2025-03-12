@@ -20,7 +20,14 @@ data:
   dashboardproviders.yaml: |-
     apiVersion: 1
     providers:
-{{ toYaml .Values.dashboardProviders.dashboardproviders.yaml | indent 6 }}
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
 ---
 apiVersion: v1
 kind: ConfigMap
