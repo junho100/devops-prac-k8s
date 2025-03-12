@@ -98,7 +98,7 @@ data:
               "expr": "process_cpu_seconds_total",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "CPU 사용량",
+              "legendFormat": "CPU 사용량 - {{ "{{instance}}" }}",
               "refId": "A"
             }
           ],
@@ -178,7 +178,7 @@ data:
               "expr": "process_resident_memory_bytes",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "메모리 사용량",
+              "legendFormat": "메모리 사용량 - {{ "{{instance}}" }}",
               "refId": "A"
             }
           ],
@@ -258,7 +258,7 @@ data:
               "expr": "go_goroutines",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "고루틴 수",
+              "legendFormat": "고루틴 수 - {{ "{{instance}}" }}",
               "refId": "A"
             }
           ],
@@ -338,7 +338,7 @@ data:
               "expr": "kubelet_running_pods",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "실행 중인 파드 수",
+              "legendFormat": "실행 중인 파드 수 - {{ "{{instance}}" }}",
               "refId": "A"
             }
           ],
