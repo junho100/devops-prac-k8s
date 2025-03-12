@@ -89,7 +89,7 @@ data:
               "expr": "sum(rate(container_cpu_usage_seconds_total{image!=\"\"}[5m])) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{ "{{pod}}" }}",
               "refId": "A"
             }
           ],
@@ -169,7 +169,7 @@ data:
               "expr": "sum(container_memory_usage_bytes{image!=\"\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{ "{{pod}}" }}",
               "refId": "A"
             }
           ],
