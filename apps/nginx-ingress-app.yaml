@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: nginx-ingress-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/junho100/devops-prac-k8s.git
     targetRevision: HEAD
-    path: apps
+    path: charts/nginx-ingress
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: ingress-nginx
   syncPolicy:
     automated:
       prune: true
