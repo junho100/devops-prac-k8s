@@ -21,6 +21,8 @@ persistence:
   enabled: true
   storageClass: ""
   size: 5Gi
+  accessMode: ReadWriteOnce
+  annotations: {}
 
 adminUser: admin
 adminPassword: admin

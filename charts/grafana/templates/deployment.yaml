@@ -17,6 +17,11 @@ spec:
         app: grafana
         release: {{ .Release.Name }}
     spec:
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
+        runAsGroup: 472
+        runAsNonRoot: true
       containers:
         - name: grafana
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

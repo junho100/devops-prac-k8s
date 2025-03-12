@@ -6,9 +6,13 @@ metadata:
   labels:
     app: grafana
     release: {{ .Release.Name }}
+  {{- if .Values.persistence.annotations }}
+  annotations:
+    {{- toYaml .Values.persistence.annotations | nindent 4 }}
+  {{- end }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.persistence.accessMode }}
   {{- if .Values.persistence.storageClass }}
   storageClassName: {{ .Values.persistence.storageClass }}
   {{- end }}
