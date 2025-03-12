@@ -22,6 +22,8 @@ persistence:
   enabled: true
   storageClass: ""
   size: 8Gi
+  accessMode: ReadWriteOnce
+  annotations: {}
 
 configMap:
   name: prometheus-config
