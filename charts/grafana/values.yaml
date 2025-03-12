@@ -33,7 +33,7 @@ datasources:
     datasources:
       - name: Prometheus
         type: prometheus
-        url: http://prometheus-prometheus:9090
+        url: http://prometheus-app-prometheus:9090
         access: proxy
         isDefault: true
 
