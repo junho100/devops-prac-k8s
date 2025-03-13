@@ -20,6 +20,8 @@ data:
       - job_name: kubernetes-pods
         kubernetes_sd_configs:
           - role: pod
+        pipeline_stages:
+          - docker: {}
         relabel_configs:
           - source_labels: [__meta_kubernetes_pod_controller_name]
             regex: ([0-9a-z-.]+?)(-[0-9a-f]{8,10})?
@@ -59,9 +61,22 @@ data:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
           - action: replace
-            replacement: /var/log/pods/${1}_${2}/*.log
-            separator: /
-            source_labels:
-            - __meta_kubernetes_namespace
-            - __meta_kubernetes_pod_name
-            target_label: __path__ 
+            replacement: /var/log/pods/*/*.log
+            target_label: __path__
+      
+      # 직접 로그 파일 경로를 지정하는 추가 설정
+      - job_name: system
+        static_configs:
+        - targets:
+            - localhost
+          labels:
+            job: varlogs
+            __path__: /var/log/*.log
+
+      - job_name: containers
+        static_configs:
+        - targets:
+            - localhost
+          labels:
+            job: containers
+            __path__: /var/lib/docker/containers/*/*.log 

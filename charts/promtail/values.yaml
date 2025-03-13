@@ -20,3 +20,5 @@ resources:
 config:
   serverPort: 3101
   lokiAddress: http://loki-app-loki:3100/loki/api/v1/push
+  logLevel: debug
+  enableTracing: true
