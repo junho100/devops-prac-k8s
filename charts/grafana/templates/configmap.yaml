@@ -716,8 +716,8 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(count_over_time({namespace=\"monitoring\"}[5m])) by (pod)",
-              "legendFormat": "{{pod}}",
+              "expr": "sum(count_over_time({namespace=\\\"monitoring\\\"}[5m])) by (pod)",
+              "legendFormat": "{{ "{{pod}}" }}",
               "refId": "A"
             }
           ],
@@ -785,7 +785,7 @@ data:
           },
           "targets": [
             {
-              "expr": "{namespace=\"monitoring\"}",
+              "expr": "{namespace=\\\"monitoring\\\"}",
               "refId": "A"
             }
           ],
