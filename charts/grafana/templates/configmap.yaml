@@ -481,14 +481,14 @@ data:
               "expr": "node_cpu_seconds_total{mode=\"system\"}",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{instance}} - System CPU",
+              "legendFormat": "{{ "{{instance}}" }} - System CPU",
               "refId": "A"
             },
             {
               "expr": "node_cpu_seconds_total{mode=\"user\"}",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{instance}} - User CPU",
+              "legendFormat": "{{ "{{instance}}" }} - User CPU",
               "refId": "B"
             }
           ],
@@ -568,7 +568,7 @@ data:
               "expr": "node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{instance}} - Used Memory",
+              "legendFormat": "{{ "{{instance}}" }} - Used Memory",
               "refId": "A"
             }
           ],
