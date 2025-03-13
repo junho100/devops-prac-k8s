@@ -24,7 +24,7 @@ spec:
         - name: init-chown-data
           image: busybox:1.35
           imagePullPolicy: IfNotPresent
-          command: ["sh", "-c", "mkdir -p /data/loki/chunks /data/loki/boltdb-shipper-active /data/loki/boltdb-shipper-cache"]
+          command: ["sh", "-c", "mkdir -p /data/loki/chunks /data/loki/boltdb-shipper-active /data/loki/boltdb-shipper-cache /data/wal"]
           volumeMounts:
             - name: storage
               mountPath: /data
@@ -50,6 +50,9 @@ spec:
             {{- if .Values.persistence.enabled }}
             - name: storage
               mountPath: /data
+            - name: storage
+              mountPath: /wal
+              subPath: wal
             {{- end }}
           securityContext:
             allowPrivilegeEscalation: false

@@ -19,6 +19,9 @@ data:
           kvstore:
             store: {{ .Values.config.ingester.lifecycler.ring.kvstore.store }}
           replication_factor: {{ .Values.config.ingester.lifecycler.ring.replication_factor }}
+      wal:
+        enabled: true
+        dir: /wal
     
     schema_config:
       configs:
