@@ -35,10 +35,12 @@ spec:
             - name: pods
               mountPath: /var/log/pods
               readOnly: true
+            - name: positions
+              mountPath: /positions
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             runAsUser: 0
           livenessProbe:
             httpGet:
@@ -62,4 +64,6 @@ spec:
             path: /var/lib/docker/containers
         - name: pods
           hostPath:
-            path: /var/log/pods 
+            path: /var/log/pods
+        - name: positions
+          emptyDir: {} 
