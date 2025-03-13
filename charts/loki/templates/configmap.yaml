@@ -23,6 +23,10 @@ data:
         enabled: true
         dir: /wal
     
+    compactor:
+      working_directory: /data/loki/compactor
+      shared_store: filesystem
+    
     schema_config:
       configs:
         - from: {{ (index .Values.config.schema_config.configs 0).from }}
