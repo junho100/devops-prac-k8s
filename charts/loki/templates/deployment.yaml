@@ -14,6 +14,23 @@ spec:
       labels:
         app: {{ .Release.Name }}-loki
     spec:
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      {{- if .Values.persistence.enabled }}
+      initContainers:
+        - name: init-chown-data
+          image: busybox:1.35
+          imagePullPolicy: IfNotPresent
+          command: ["chown", "-R", "10001:10001", "/data"]
+          volumeMounts:
+            - name: storage
+              mountPath: /data
+          securityContext:
+            runAsUser: 0
+      {{- end }}
       containers:
         - name: loki
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -31,6 +48,12 @@ spec:
             - name: storage
               mountPath: /data
             {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:

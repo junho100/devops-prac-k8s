@@ -32,9 +32,9 @@ data:
     
     storage_config:
       boltdb_shipper:
-        active_index_directory: {{ .Values.config.storage_config.boltdb_shipper.active_index_directory }}
-        cache_location: {{ .Values.config.storage_config.boltdb_shipper.cache_location }}
+        active_index_directory: /data/loki/boltdb-shipper-active
+        cache_location: /data/loki/boltdb-shipper-cache
         cache_ttl: {{ .Values.config.storage_config.boltdb_shipper.cache_ttl }}
         shared_store: {{ .Values.config.storage_config.boltdb_shipper.shared_store }}
       filesystem:
-        directory: {{ .Values.config.storage_config.filesystem.directory }} 
+        directory: /data/loki/chunks 
