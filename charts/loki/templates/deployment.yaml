@@ -24,12 +24,15 @@ spec:
         - name: init-chown-data
           image: busybox:1.35
           imagePullPolicy: IfNotPresent
-          command: ["chown", "-R", "10001:10001", "/data"]
+          command: ["sh", "-c", "mkdir -p /data/loki/chunks /data/loki/boltdb-shipper-active /data/loki/boltdb-shipper-cache"]
           volumeMounts:
             - name: storage
               mountPath: /data
           securityContext:
-            runAsUser: 0
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
       {{- end }}
       containers:
         - name: loki
@@ -53,7 +56,7 @@ spec:
             capabilities:
               drop:
               - ALL
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
