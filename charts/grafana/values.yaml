@@ -36,6 +36,12 @@ datasources:
         url: http://prometheus-app-prometheus:9090
         access: proxy
         isDefault: true
+      - name: Loki
+        type: loki
+        url: http://loki-app-loki:3100
+        access: proxy
+        isDefault: false
+        editable: true
 
 dashboardProviders:
   dashboardproviders:
@@ -58,3 +64,7 @@ dashboards:
       gnetId: 1860
       revision: 27
       datasource: Prometheus
+    loki-logs:
+      gnetId: 12019
+      revision: 2
+      datasource: Loki

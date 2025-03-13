@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-loki-config
+  labels:
+    app: {{ .Release.Name }}-loki
+data:
+  loki.yaml: |
+    auth_enabled: {{ .Values.config.auth_enabled }}
+    server:
+      http_listen_port: {{ .Values.config.server.http_listen_port }}
+    
+    ingester:
+      chunk_idle_period: {{ .Values.config.ingester.chunk_idle_period }}
+      chunk_block_size: {{ .Values.config.ingester.chunk_block_size }}
+      chunk_retain_period: {{ .Values.config.ingester.chunk_retain_period }}
+      lifecycler:
+        ring:
+          kvstore:
+            store: {{ .Values.config.ingester.lifecycler.ring.kvstore.store }}
+          replication_factor: {{ .Values.config.ingester.lifecycler.ring.replication_factor }}
+    
+    schema_config:
+      configs:
+        - from: {{ (index .Values.config.schema_config.configs 0).from }}
+          store: {{ (index .Values.config.schema_config.configs 0).store }}
+          object_store: {{ (index .Values.config.schema_config.configs 0).object_store }}
+          schema: {{ (index .Values.config.schema_config.configs 0).schema }}
+          index:
+            prefix: {{ (index .Values.config.schema_config.configs 0).index.prefix }}
+            period: {{ (index .Values.config.schema_config.configs 0).index.period }}
+    
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: {{ .Values.config.storage_config.boltdb_shipper.active_index_directory }}
+        cache_location: {{ .Values.config.storage_config.boltdb_shipper.cache_location }}
+        cache_ttl: {{ .Values.config.storage_config.boltdb_shipper.cache_ttl }}
+        shared_store: {{ .Values.config.storage_config.boltdb_shipper.shared_store }}
+      filesystem:
+        directory: {{ .Values.config.storage_config.filesystem.directory }} 
