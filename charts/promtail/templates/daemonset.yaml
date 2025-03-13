@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Release.Name }}-promtail
+  labels:
+    app: {{ .Release.Name }}-promtail
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-promtail
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-promtail
+    spec:
+      serviceAccountName: {{ .Release.Name }}-promtail
+      containers:
+        - name: promtail
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-config.file=/etc/promtail/promtail.yaml"
+          ports:
+            - name: http
+              containerPort: {{ .Values.config.serverPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/promtail
+            - name: run
+              mountPath: /run/promtail
+            - name: containers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+            - name: pods
+              mountPath: /var/log/pods
+              readOnly: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsUser: 0
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-promtail-config
+        - name: run
+          hostPath:
+            path: /run/promtail
+        - name: containers
+          hostPath:
+            path: /var/lib/docker/containers
+        - name: pods
+          hostPath:
+            path: /var/log/pods 

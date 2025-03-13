@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: grafana/promtail
+  tag: 2.9.2
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3101
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+config:
+  serverPort: 3101
+  lokiAddress: http://loki-app-loki:3100/loki/api/v1/push
