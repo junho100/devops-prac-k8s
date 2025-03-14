@@ -107,7 +107,7 @@ data:
           - docker: {}
           - multiline:
               firstline: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
-          # JSON 로그와 일반 텍스트 로그를 구분하여 처리
+          # JSON 로그 처리
           - match:
               selector: '{app="server-app"} |~ "\\{.*\\}"'
               stages:
@@ -115,7 +115,7 @@ data:
                     expression: '^.*?stdout F (?P<json_content>\{.*\})$'
                 - json:
                     source: json_content
-                    # expressions 필드를 생략하여 모든 JSON 필드를 자동으로 레이블로 추출
+                    jmes: "@"  # 모든 JSON 필드를 추출하기 위한 JMESPath 표현식
                 - labels:
                     log_type: json_log
           # 텍스트 로그 처리
@@ -126,7 +126,5 @@ data:
                     expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z) (?P<stream>stdout|stderr) F (?P<content>.*)$'
                 - labels:
                     log_type: text_log
-                    timestamp: '{{ .timestamp }}'
-                    stream: '{{ .stream }}'
                 - output:
                     source: content
