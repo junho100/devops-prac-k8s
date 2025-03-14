@@ -61,7 +61,7 @@ data:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
           - action: replace
-            replacement: /var/log/pods/*/*.log
+            replacement: /var/log/pods/*/*/*.log
             target_label: __path__
       
       # 직접 로그 파일 경로를 지정하는 추가 설정
