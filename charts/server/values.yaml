@@ -8,7 +8,7 @@ image:
   repository: bemodesty306/devops-prac-server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "sha-2f2d218"
+  tag: "sha-afebb55"
 
 imagePullSecrets: []
 nameOverride: ""
