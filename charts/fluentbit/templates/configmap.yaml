@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    app: {{ .Release.Name }}
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+      Flush {{ .Values.config.service.flush }}
+      Daemon {{ .Values.config.service.daemon }}
+      Log_Level {{ .Values.config.service.log_level }}
+      Parsers_File parsers.conf
+
+    {{- range .Values.config.inputs }}
+    [INPUT]
+      Name {{ .name }}
+      Tag {{ .tag }}
+      Path {{ .path }}
+      Parser {{ .parser }}
+      Refresh_Interval {{ .refresh_interval }}
+      Mem_Buf_Limit {{ .mem_buf_limit }}
+      Skip_Long_Lines {{ .skip_long_lines }}
+    {{- end }}
+
+    {{- range .Values.config.filters }}
+    [FILTER]
+      Name {{ .name }}
+      Match {{ .match }}
+      Kube_URL {{ .kube_url }}
+      Kube_CA_File {{ .kube_ca_file }}
+      Kube_Token_File {{ .kube_token_file }}
+      Kube_Tag_Prefix {{ .kube_tag_prefix }}
+      Merge_Log {{ .merge_log }}
+      Merge_Log_Key {{ .merge_log_key }}
+      K8S-Logging.Parser {{ get . "k8s-logging.parser" }}
+      K8S-Logging.Exclude {{ get . "k8s-logging.exclude" }}
+    {{- end }}
+
+    {{- range .Values.config.outputs }}
+    [OUTPUT]
+      Name {{ .name }}
+      Match {{ .match }}
+      {{- if eq .name "loki" }}
+      Host {{ .host }}
+      Port {{ .port }}
+      Labels {{ .labels }}
+      Line_Format {{ .line_format }}
+      TLS {{ .tls }}
+      {{- end }}
+    {{- end }}
+
+  parsers.conf: |
+    {{- range .Values.parsers }}
+    [PARSER]
+      Name {{ .name }}
+      Format {{ .format }}
+      Time_Key {{ .time_key }}
+      Time_Format {{ .time_format }}
+    {{- end }} 
