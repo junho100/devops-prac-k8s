@@ -29,7 +29,8 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # 디버깅을 위해 읽기 전용 루트 파일 시스템 설정 제거
+            # readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL
