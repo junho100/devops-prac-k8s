@@ -22,19 +22,17 @@ config:
   service:
     flush: 1
     daemon: off
-    log_level: debug
+    log_level: info
     parsers_file: parsers.conf
 
   inputs:
     - name: tail
       tag: kube.*
-      path: /var/log/pods/**/*.log
+      path: /var/log/containers/*.log
       parser: docker
       refresh_interval: 5
       mem_buf_limit: 5MB
       skip_long_lines: true
-      read_from_head: true
-      db: /fluent-bit/state/tail.db
 
   filters:
     - name: kubernetes

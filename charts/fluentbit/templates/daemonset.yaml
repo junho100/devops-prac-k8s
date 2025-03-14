@@ -13,32 +13,10 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ .Release.Name }}
-      # 호스트 네트워크 사용 (선택 사항)
-      # hostNetwork: true
-      # 호스트 PID 사용 (선택 사항)
-      # hostPID: true
-      # fsGroup을 통해 로그 파일 접근 권한 부여
-      securityContext:
-        fsGroup: 2000
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # 최소 권한 원칙에 따른 보안 컨텍스트 설정
-          securityContext:
-            privileged: false
-            allowPrivilegeEscalation: false
-            # 디버깅을 위해 읽기 전용 루트 파일 시스템 설정 제거
-            # readOnlyRootFilesystem: true
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - CAP_FOWNER
-                - CAP_SETUID
-                - CAP_SETGID
-                - CAP_DAC_OVERRIDE
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -54,16 +32,12 @@ spec:
               subPath: parsers.conf
             - name: varlog
               mountPath: /var/log
-              readOnly: true
             - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers
               readOnly: true
             - name: etcmachineid
               mountPath: /etc/machine-id
               readOnly: true
-            # Fluent Bit이 상태를 저장할 수 있는 쓰기 가능한 디렉터리
-            - name: fluent-bit-state
-              mountPath: /fluent-bit/state
       volumes:
         - name: config
           configMap:
@@ -78,6 +52,3 @@ spec:
           hostPath:
             path: /etc/machine-id
             type: File
-        # Fluent Bit 상태를 저장하기 위한 emptyDir 볼륨
-        - name: fluent-bit-state
-          emptyDir: {} 

@@ -11,13 +11,6 @@ data:
       Daemon {{ .Values.config.service.daemon }}
       Log_Level {{ .Values.config.service.log_level }}
       Parsers_File parsers.conf
-      HTTP_Server On
-      HTTP_Listen 0.0.0.0
-      HTTP_Port 2020
-      Storage.path /fluent-bit/state/storage
-      Storage.sync normal
-      Storage.checksum off
-      Storage.backlog.mem_limit 5M
 
     {{- range .Values.config.inputs }}
     [INPUT]
@@ -28,12 +21,6 @@ data:
       Refresh_Interval {{ .refresh_interval }}
       Mem_Buf_Limit {{ .mem_buf_limit }}
       Skip_Long_Lines {{ .skip_long_lines }}
-      {{- if .read_from_head }}
-      Read_from_Head {{ .read_from_head }}
-      {{- end }}
-      {{- if .db }}
-      DB {{ .db }}
-      {{- end }}
     {{- end }}
 
     {{- range .Values.config.filters }}
@@ -70,4 +57,4 @@ data:
       Format {{ .format }}
       Time_Key {{ .time_key }}
       Time_Format {{ .time_format }}
-    {{- end }} 
+    {{- end }}
