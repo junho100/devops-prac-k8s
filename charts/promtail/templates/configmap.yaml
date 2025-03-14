@@ -107,17 +107,16 @@ data:
           - docker: {}
           - multiline:
               firstline: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
-          # JSON 로그 처리
+          # JSON 로그 처리 - JSON 스테이지를 제거하고 간소화
           - match:
               selector: '{app="server-app"} |~ "\\{.*\\}"'
               stages:
                 - regex:
-                    expression: '^.*?stdout F (?P<json_content>\{.*\})$'
-                - json:
-                    source: json_content
-                    jmes: "@"  # 모든 JSON 필드를 추출하기 위한 JMESPath 표현식
+                    expression: '^.*?stdout F (?P<log_content>\{.*\})$'
                 - labels:
                     log_type: json_log
+                - output:
+                    source: log_content
           # 텍스트 로그 처리
           - match:
               selector: '{app="server-app"} !~ "\\{.*\\}"'
