@@ -1,0 +1,242 @@
+===== Fluent Bit 파드 확인 =====
+NAME                  READY   STATUS    RESTARTS   AGE
+fluentbit-app-pc7nd   1/1     Running   0          53s
+fluentbit-app-vcmp6   1/1     Running   0          55s
+
+===== Fluent Bit 파드 상세 정보 =====
+Name:             fluentbit-app-pc7nd
+Namespace:        logging
+Priority:         0
+Service Account:  fluentbit-app
+Node:             lke369857-574346-234c89b60000/192.168.150.69
+Start Time:       Fri, 14 Mar 2025 12:47:49 +0900
+Labels:           app=fluentbit-app
+                  controller-revision-hash=65498875bf
+                  pod-template-generation=2
+Annotations:      cni.projectcalico.org/containerID: b0248b54c49a6f0f37b0005d586ebcb25e24fbe9575afab532369eed8dd56d13
+                  cni.projectcalico.org/podIP: 10.2.0.33/32
+                  cni.projectcalico.org/podIPs: 10.2.0.33/32
+Status:           Running
+IP:               10.2.0.33
+IPs:
+  IP:           10.2.0.33
+Controlled By:  DaemonSet/fluentbit-app
+Containers:
+  fluentbit-app:
+    Container ID:   containerd://1889bffd624e5c76b1854eab6b02367ca4c92031d76b73300964d68b8b5a8628
+    Image:          fluent/fluent-bit:2.1.10
+    Image ID:       docker.io/fluent/fluent-bit@sha256:5766d881ddb1fdacd9c5b24c9f28371ae22d44faaf3f7a510e5e86e37fd6244f
+    Port:           2020/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 14 Mar 2025 12:47:49 +0900
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     500m
+      memory:  256Mi
+    Requests:
+      cpu:        100m
+      memory:     128Mi
+    Environment:  <none>
+    Mounts:
+      /etc/machine-id from etcmachineid (ro)
+      /fluent-bit/etc/fluent-bit.conf from config (rw,path="fluent-bit.conf")
+      /fluent-bit/etc/parsers.conf from config (rw,path="parsers.conf")
+      /fluent-bit/state from fluent-bit-state (rw)
+      /var/lib/docker/containers from varlibdockercontainers (ro)
+      /var/log from varlog (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-52pbc (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      fluentbit-app-config
+    Optional:  false
+  varlog:
+    Type:          HostPath (bare host directory volume)
+    Path:          /var/log
+    HostPathType:  
+  varlibdockercontainers:
+    Type:          HostPath (bare host directory volume)
+    Path:          /var/lib/docker/containers
+    HostPathType:  
+  etcmachineid:
+    Type:          HostPath (bare host directory volume)
+    Path:          /etc/machine-id
+    HostPathType:  File
+  fluent-bit-state:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  kube-api-access-52pbc:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/disk-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/memory-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/not-ready:NoExecute op=Exists
+                             node.kubernetes.io/pid-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/unreachable:NoExecute op=Exists
+                             node.kubernetes.io/unschedulable:NoSchedule op=Exists
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  53s   default-scheduler  Successfully assigned logging/fluentbit-app-pc7nd to lke369857-574346-234c89b60000
+  Normal  Pulled     53s   kubelet            Container image "fluent/fluent-bit:2.1.10" already present on machine
+  Normal  Created    53s   kubelet            Created container: fluentbit-app
+  Normal  Started    53s   kubelet            Started container fluentbit-app
+
+===== Fluent Bit 보안 컨텍스트 확인 =====
+{"fsGroup":2000}
+{"allowPrivilegeEscalation":false,"capabilities":{"add":["CAP_FOWNER","CAP_SETUID","CAP_SETGID","CAP_DAC_OVERRIDE"],"drop":["ALL"]},"privileged":false}
+
+===== Fluent Bit 로그 확인 =====
+[2025/03/14 03:47:49] [ info] [filter:kubernetes:kubernetes.0] https=1 host=kubernetes.default.svc port=443
+[2025/03/14 03:47:49] [ info] [filter:kubernetes:kubernetes.0]  token updated
+[2025/03/14 03:47:49] [ info] [filter:kubernetes:kubernetes.0] local POD info OK
+[2025/03/14 03:47:49] [ info] [filter:kubernetes:kubernetes.0] testing connectivity with API server...
+[2025/03/14 03:47:49] [debug] [filter:kubernetes:kubernetes.0] Send out request to API Server for pods information
+[2025/03/14 03:47:49] [debug] [http_client] not using http_proxy for header
+[2025/03/14 03:47:49] [debug] [http_client] server kubernetes.default.svc:443 will close connection #31
+[2025/03/14 03:47:49] [debug] [filter:kubernetes:kubernetes.0] Request (ns=logging, pod=fluentbit-app-pc7nd) http_do=0, HTTP Status: 200
+[2025/03/14 03:47:49] [ info] [filter:kubernetes:kubernetes.0] connectivity OK
+[2025/03/14 03:47:49] [debug] [stdout:stdout.0] created event channels: read=31 write=32
+[2025/03/14 03:47:49] [debug] [loki:loki.1] created event channels: read=38 write=39
+[2025/03/14 03:47:49] [ info] [output:loki:loki.1] configured, hostname=loki-app:3100
+[2025/03/14 03:47:49] [debug] [router] match rule tail.0:stdout.0
+[2025/03/14 03:47:49] [debug] [router] match rule tail.0:loki.1
+[2025/03/14 03:47:49] [debug] [router] match rule storage_backlog.1:stdout.0
+[2025/03/14 03:47:49] [debug] [router] match rule storage_backlog.1:loki.1
+[2025/03/14 03:47:49] [ info] [output:stdout:stdout.0] worker #0 started
+[2025/03/14 03:47:49] [ info] [http_server] listen iface=0.0.0.0 tcp_port=2020
+[2025/03/14 03:47:49] [ info] [sp] stream processor started
+[2025/03/14 03:47:49] [debug] [input:tail:tail.0] [static files] processed 0b, done
+[2025/03/14 03:47:53] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:47:53] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:47:53] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:47:58] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:47:58] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:47:58] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:03] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:03] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:03] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:08] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:08] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:08] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:13] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:13] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:13] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:18] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:18] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:18] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:23] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:23] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:23] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:28] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:28] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:28] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:33] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:33] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:33] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+[2025/03/14 03:48:38] [debug] [input:tail:tail.0] scanning path /var/log/pods/**/*.log
+[2025/03/14 03:48:38] [debug] [input:tail:tail.0] cannot read info from: /var/log/pods/**/*.log
+[2025/03/14 03:48:38] [debug] [input:tail:tail.0] 0 new files found on path '/var/log/pods/**/*.log'
+
+===== Fluent Bit 상태 확인 =====
+파드 상태: Running
+컨테이너 상태: true
+재시작 횟수: 0
+
+===== Fluent Bit 설정 확인 =====
+ConfigMap 내용:
+apiVersion: v1
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+      Flush 1
+      Daemon false
+      Log_Level debug
+      Parsers_File parsers.conf
+      HTTP_Server On
+      HTTP_Listen 0.0.0.0
+      HTTP_Port 2020
+      Storage.path /fluent-bit/state/storage
+      Storage.sync normal
+      Storage.checksum off
+      Storage.backlog.mem_limit 5M
+    [INPUT]
+      Name tail
+      Tag kube.*
+      Path /var/log/pods/**/*.log
+      Parser docker
+      Refresh_Interval 5
+      Mem_Buf_Limit 5MB
+      Skip_Long_Lines true
+      Read_from_Head true
+      DB /fluent-bit/state/tail.db
+    [FILTER]
+      Name kubernetes
+      Match kube.*
+      Kube_URL https://kubernetes.default.svc:443
+      Kube_CA_File /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      Kube_Token_File /var/run/secrets/kubernetes.io/serviceaccount/token
+      Kube_Tag_Prefix kube.
+      Merge_Log true
+      Merge_Log_Key log_processed
+      K8S-Logging.Parser true
+      K8S-Logging.Exclude true
+    [OUTPUT]
+      Name stdout
+      Match *
+    [OUTPUT]
+      Name loki
+      Match *
+      Host loki-app
+      Port 3100
+      Labels job=fluentbit, k8s_namespace=$kubernetes['namespace_name'], k8s_pod_name=$kubernetes['pod_name'], k8s_container_name=$kubernetes['container_name']
+      Line_Format json
+      TLS false
+  parsers.conf: |
+    [PARSER]
+      Name docker
+      Format json
+      Time_Key time
+      Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"fluent-bit.conf":"[SERVICE]\n  Flush 1\n  Daemon false\n  Log_Level debug\n  Parsers_File parsers.conf\n  HTTP_Server On\n  HTTP_Listen 0.0.0.0\n  HTTP_Port 2020\n  Storage.path /fluent-bit/state/storage\n  Storage.sync normal\n  Storage.checksum off\n  Storage.backlog.mem_limit 5M\n[INPUT]\n  Name tail\n  Tag kube.*\n  Path /var/log/pods/**/*.log\n  Parser docker\n  Refresh_Interval 5\n  Mem_Buf_Limit 5MB\n  Skip_Long_Lines true\n  Read_from_Head true\n  DB /fluent-bit/state/tail.db\n[FILTER]\n  Name kubernetes\n  Match kube.*\n  Kube_URL https://kubernetes.default.svc:443\n  Kube_CA_File /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n  Kube_Token_File /var/run/secrets/kubernetes.io/serviceaccount/token\n  Kube_Tag_Prefix kube.\n  Merge_Log true\n  Merge_Log_Key log_processed\n  K8S-Logging.Parser true\n  K8S-Logging.Exclude true\n[OUTPUT]\n  Name stdout\n  Match *\n[OUTPUT]\n  Name loki\n  Match *\n  Host loki-app\n  Port 3100\n  Labels job=fluentbit, k8s_namespace=$kubernetes['namespace_name'], k8s_pod_name=$kubernetes['pod_name'], k8s_container_name=$kubernetes['container_name']\n  Line_Format json\n  TLS false\n","parsers.conf":"[PARSER]\n  Name docker\n  Format json\n  Time_Key time\n  Time_Format %Y-%m-%dT%H:%M:%S.%L%z\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app":"fluentbit-app","app.kubernetes.io/instance":"fluentbit-app"},"name":"fluentbit-app-config","namespace":"logging"}}
+  creationTimestamp: "2025-03-14T03:30:22Z"
+  labels:
+    app: fluentbit-app
+    app.kubernetes.io/instance: fluentbit-app
+  name: fluentbit-app-config
+  namespace: logging
+  resourceVersion: "201234"
+  uid: 1b24d5da-c2fd-4518-907b-4ca9ca5b7aa2
+
+===== Fluent Bit 메트릭 확인 =====
+다음 명령어를 실행하여 메트릭을 확인할 수 있습니다:
+kubectl port-forward -n logging fluentbit-app-pc7nd 2020:2020
+그런 다음 브라우저에서 http://localhost:2020/api/v1/metrics 접속
+
+===== 테스트 로그 생성 =====
+다음 명령어로 테스트 로그를 생성할 수 있습니다:
+kubectl run test-logger --image=busybox -- sh -c 'while true; do echo $(date) - 테스트 로그 메시지; sleep 5; done'
+
+===== Loki에서 로그 확인 =====
+Grafana를 통해 Loki에서 로그를 확인하려면 다음 명령어를 실행하세요:
+kubectl port-forward -n monitoring svc/grafana-app 3000:80
+그런 다음 브라우저에서 http://localhost:3000에 접속하여 Explore 메뉴에서 Loki 데이터 소스를 선택하고 로그를 확인하세요.

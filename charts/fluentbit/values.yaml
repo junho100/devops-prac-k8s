@@ -52,7 +52,7 @@ config:
     # Loki 출력 설정 (Loki가 설치된 경우)
     - name: loki
       match: "*"
-      host: loki-app-loki
+      host: loki-app-loki.monitoring.svc.cluster.local
       port: 3100
       labels: job=fluentbit, k8s_namespace=$kubernetes['namespace_name'], k8s_pod_name=$kubernetes['pod_name'], k8s_container_name=$kubernetes['container_name']
       line_format: json
