@@ -112,7 +112,9 @@ data:
             target_label: __path__
         pipeline_stages:
           - docker: {}
-          - json: {}
+          - json:
+              expressions:
+                log: log
           - timestamp:
               source: timestamp
               format: RFC3339 
