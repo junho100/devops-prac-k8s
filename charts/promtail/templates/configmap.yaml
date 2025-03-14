@@ -60,7 +60,7 @@ data:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
           - action: replace
-            replacement: /var/log/pods/*/*/*/*.log
+            replacement: /var/log/pods/*/*/*.log
             target_label: __path__
         pipeline_stages:
           - docker: {}
@@ -101,7 +101,7 @@ data:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
           - action: replace
-            replacement: /var/log/pods/default_server-app*/*/*.log
+            replacement: /var/log/pods/default_server-app*/*/*
             target_label: __path__
         pipeline_stages:
           - docker: {}
