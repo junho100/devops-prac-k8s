@@ -18,11 +18,18 @@ data:
       - url: http://loki-app-loki:3100/loki/api/v1/push
 
     scrape_configs:
-      # 모든 경로 패턴을 명확하게 지정하고 모든 파싱 제거
       - job_name: kubernetes-pods
         kubernetes_sd_configs:
           - role: pod
         relabel_configs:
+          # Keep only server-app pods
+          - source_labels: [__meta_kubernetes_pod_name]
+            regex: server-app.*
+            action: keep
+          # Only include pods from the default namespace
+          - source_labels: [__meta_kubernetes_namespace]
+            regex: default
+            action: keep
           - source_labels: [__meta_kubernetes_pod_controller_name]
             regex: ([0-9a-z-.]+?)(-[0-9a-f]{8,10})?
             action: replace
@@ -61,6 +68,5 @@ data:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
           - action: replace
-            replacement: /var/log/pods/**/*.log
+            replacement: /var/log/pods/default_server-app-*/**/server/*.log
             target_label: __path__
-        # 모든 파이프라인 스테이지 제거
