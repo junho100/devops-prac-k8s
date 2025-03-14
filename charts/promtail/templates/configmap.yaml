@@ -73,8 +73,19 @@ data:
         pipeline_stages:
           # Extract the JSON part from the log line
           - regex:
-              expression: '^(?P<timestamp>\S+) (?P<stream>\S+) (?P<flags>\S+) (?P<json_content>\{.+\})$'
-          # Parse the extracted JSON without specifying fields
+              expression: '^(?P<timestamp>\S+) (?P<stream>\S+) (?P<flags>\S+) (?P<content>\{.+\})$'
+          # Parse the extracted JSON
           - json:
-              source: json_content
-              drop_malformed: true
+              expressions:
+                log: content
+          # Now extract all fields from the parsed JSON
+          - json:
+              expressions:
+                timestamp: .timestamp
+                level: .level
+                request_id: .request_id
+                service_name: .service_name
+                url: .url
+                response_time_mil: .response_time_mil
+                http_method: .http_method
+                http_status_code: .http_status_code
