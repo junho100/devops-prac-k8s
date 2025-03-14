@@ -14,6 +14,12 @@ data:
       HTTP_Server On
       HTTP_Listen 0.0.0.0
       HTTP_Port 2020
+      {{- if .Values.config.service.storage.path }}
+      Storage.path {{ .Values.config.service.storage.path }}
+      Storage.sync {{ .Values.config.service.storage.sync }}
+      Storage.checksum {{ .Values.config.service.storage.checksum }}
+      Storage.backlog.mem_limit {{ .Values.config.service.storage.backlog.mem_limit }}
+      {{- end }}
 
     {{- range .Values.config.inputs }}
     [INPUT]
@@ -26,6 +32,9 @@ data:
       Skip_Long_Lines {{ .skip_long_lines }}
       {{- if .read_from_head }}
       Read_from_Head {{ .read_from_head }}
+      {{- end }}
+      {{- if .db }}
+      DB {{ .db }}
       {{- end }}
     {{- end }}
 
