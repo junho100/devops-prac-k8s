@@ -22,7 +22,7 @@ config:
   service:
     flush: 1
     daemon: off
-    log_level: info
+    log_level: debug
     parsers_file: parsers.conf
 
   inputs:
@@ -33,6 +33,7 @@ config:
       refresh_interval: 5
       mem_buf_limit: 5MB
       skip_long_lines: true
+      read_from_head: true
 
   filters:
     - name: kubernetes
