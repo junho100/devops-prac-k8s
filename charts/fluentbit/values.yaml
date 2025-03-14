@@ -24,10 +24,6 @@ config:
     daemon: off
     log_level: debug
     parsers_file: parsers.conf
-    storage.path: /fluent-bit/state/storage
-    storage.sync: normal
-    storage.checksum: off
-    storage.backlog.mem_limit: 5M
 
   inputs:
     - name: tail
