@@ -7,18 +7,18 @@ metadata:
 data:
   promtail.yaml: |
     server:
-      http_listen_port: {{ .Values.config.serverPort }}
+      http_listen_port: 3101
       grpc_listen_port: 0
-      log_level: info
+      log_level: debug
 
     positions:
       filename: /positions/positions.yaml
 
     clients:
-      - url: {{ .Values.config.lokiAddress }}
+      - url: http://loki-app-loki:3100/loki/api/v1/push
 
     scrape_configs:
-      # 기본 쿠버네티스 로그 수집 (파싱 없이 단순 수집)
+      # 모든 경로 패턴을 명확하게 지정하고 모든 파싱 제거
       - job_name: kubernetes-pods
         kubernetes_sd_configs:
           - role: pod
@@ -61,48 +61,6 @@ data:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
           - action: replace
-            replacement: /var/log/pods/*/*/*.log
+            replacement: /var/log/pods/**/*.log
             target_label: __path__
-        pipeline_stages:
-          - docker: {}
-
-      # 시스템 로그 수집
-      - job_name: system
-        static_configs:
-        - targets:
-            - localhost
-          labels:
-            job: varlogs
-            __path__: /var/log/*.log
-
-      # server-app 로그 수집 - 최소한의 파싱으로 단순화
-      - job_name: server-app-logs
-        kubernetes_sd_configs:
-          - role: pod
-        relabel_configs:
-          - source_labels: [__meta_kubernetes_pod_label_app]
-            regex: server-app
-            action: keep
-          - action: replace
-            source_labels:
-            - __meta_kubernetes_pod_node_name
-            target_label: node_name
-          - action: replace
-            source_labels:
-            - __meta_kubernetes_namespace
-            target_label: namespace
-          - action: replace
-            source_labels:
-            - __meta_kubernetes_pod_name
-            target_label: pod
-          - action: replace
-            source_labels:
-            - __meta_kubernetes_pod_container_name
-            target_label: container
-          - action: labelmap
-            regex: __meta_kubernetes_pod_label_(.+)
-          - action: replace
-            replacement: /var/log/pods/default_server-app*/*/*
-            target_label: __path__
-        pipeline_stages:
-          - docker: {}
+        # 모든 파이프라인 스테이지 제거
