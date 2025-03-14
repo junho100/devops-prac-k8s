@@ -112,7 +112,12 @@ data:
             target_label: __path__
         pipeline_stages:
           - docker: {}
-          - regex:
-              expression: '.*(?P<json_content>\{.*\})$'
-          - output:
-              source: json_content 
+          - match:
+              selector: '{app="server-app"}'
+              stages:
+                - regex:
+                    expression: '.*stdout F (?P<json_content>\{.*\})$'
+                - json:
+                    source: json_content
+                    expressions:
+                      log: '' 
