@@ -9,6 +9,7 @@ data:
     server:
       http_listen_port: {{ .Values.config.serverPort }}
       grpc_listen_port: 0
+      log_level: info
 
     positions:
       filename: /positions/positions.yaml
@@ -112,12 +113,9 @@ data:
             target_label: __path__
         pipeline_stages:
           - docker: {}
-          - match:
-              selector: '{app="server-app"}'
-              stages:
-                - regex:
-                    expression: '.*stdout F (?P<json_content>\{.*\})$'
-                - json:
-                    source: json_content
-                    expressions:
-                      log: '' 
+          - regex:
+              expression: '.*stdout F (?P<log_content>\{.*\})$'
+          - json:
+              expressions:
+                level: level
+              source: log_content 
