@@ -70,3 +70,27 @@ data:
           - action: replace
             replacement: /var/log/pods/default_server-app-*/**/server/*.log
             target_label: __path__
+        pipeline_stages:
+          # Extract the JSON part from the log line
+          - regex:
+              expression: '^(?P<timestamp>\S+) (?P<stream>\S+) (?P<flags>\S+) (?P<json_content>\{.+\})$'
+          # Parse the extracted JSON
+          - json:
+              expressions:
+                timestamp: timestamp
+                level: level
+                request_id: request_id
+                service_name: service_name
+                url: url
+                response_time_mil: response_time_mil
+                http_method: http_method
+                http_status_code: http_status_code
+          # Set labels from the extracted JSON fields
+          - labels:
+              timestamp:
+              level:
+              request_id:
+              service_name:
+              url:
+              http_method:
+              http_status_code:
