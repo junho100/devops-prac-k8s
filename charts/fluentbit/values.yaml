@@ -28,7 +28,7 @@ config:
   inputs:
     - name: tail
       tag: kube.*
-      path: /var/log/containers/*.log
+      path: /var/log/containers/server-app*.log
       parser: docker
       refresh_interval: 5
       mem_buf_limit: 5MB
