@@ -41,15 +41,22 @@ config:
       kube_ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       kube_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       kube_tag_prefix: kube.
-      merge_log: true
+      merge_log: on
       merge_log_key: log_processed
-      k8s-logging.parser: on
-      k8s-logging.exclude: on
+      "k8s-logging.parser": on
+      "k8s-logging.exclude": on
+
+    # 도커 로그에서 실제 JSON 데이터만 추출
+    - name: parser
+      match: kube.*
+      key_name: log
+      parser: json_content
+      reserve_data: true
 
   outputs:
     - name: stdout
       match: "*"
-    # Loki 출력 설정 (Loki가 설치된 경우)
+    # Loki 출력 설정
     - name: loki
       match: "*"
       host: loki-app-loki.monitoring.svc.cluster.local
@@ -57,10 +64,21 @@ config:
       labels: job=fluentbit, namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name'], container=$kubernetes['container_name']
       line_format: json
       tls: off
+      auto_kubernetes_labels: on
+      # 원본 로그 제거하고 파싱된 JSON만 전달
+      remove_keys: kubernetes,stream,time,log_processed,log
 
 # 파서 설정
 parsers:
+  # 기본 도커 로그 형식 파서
   - name: docker
-    format: json
+    format: regex
+    regex: "^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$"
     time_key: time
     time_format: "%Y-%m-%dT%H:%M:%S.%L%z"
+
+  # JSON 컨텐츠 파서 (실제 로그 내용을 파싱)
+  - name: json_content
+    format: json
+    time_key: timestamp
+    time_format: "%Y-%m-%dT%H:%M:%S%z"
